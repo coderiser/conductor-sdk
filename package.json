@@ -4,8 +4,8 @@
   "description": "Cross-platform SDK for spawning and managing AI agent terminal sessions (Claude Code, Codex, OpenCode)",
   "type": "module",
   "bin": {
-    "conductor": "./dist/cli.js",
-    "conductor-daemon": "./dist/daemon.js"
+    "conductor": "dist/cli.js",
+    "conductor-daemon": "dist/daemon.js"
   },
   "main": "./dist/cli.js",
   "files": [
