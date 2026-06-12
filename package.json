@@ -1,0 +1,27 @@
+{
+  "name": "conductor-cli",
+  "version": "1.0.0",
+  "description": "Cross-platform CLI for spawning and managing AI agent terminal sessions",
+  "type": "module",
+  "bin": {
+    "conductor": "./dist/cli.js",
+    "conductor-daemon": "./dist/daemon.js"
+  },
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite build --watch",
+    "start": "node dist/cli.js",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": ["cli", "terminal", "pty", "ai-agent", "claude-code", "codex", "opencode"],
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^13.1.0",
+    "node-pty": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.7.0",
+    "vite": "^6.0.0"
+  }
+}
