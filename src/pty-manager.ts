@@ -22,8 +22,23 @@ export class PtyManager {
   setExitHandler(fn: (sessionId: string, code: number) => void): void { this.onExit = fn; }
 
   spawn(sessionId: string, config: AgentConfig, cwd: string, cols: number, rows: number, isResume: boolean): PtySession {
-    const args = resolveAgentArgs(config, sessionId, isResume);
-    const cmd = IS_WINDOWS ? (config.command.endsWith('.exe') ? config.command : config.command + '.exe') : config.command;
+    const agentArgs = resolveAgentArgs(config, sessionId, isResume);
+    let cmd: string;
+    let args: string[];
+
+    if (IS_WINDOWS) {
+      // .exe files can be spawned directly; .cmd/.bat and bare commands need cmd.exe wrapper
+      if (config.command.endsWith('.exe')) {
+        cmd = config.command;
+        args = agentArgs;
+      } else {
+        cmd = 'cmd.exe';
+        args = ['/c', [config.command, ...agentArgs].join(' ')];
+      }
+    } else {
+      cmd = config.command;
+      args = agentArgs;
+    }
 
     const pty = spawn(cmd, args, {
       name: 'xterm-256color',
