@@ -8,15 +8,29 @@ Windows, macOS, and Linux. One daemon. Any agent.
 
 ```bash
 npm install -g conductor-sdk
-conductor-daemon &          # start daemon
-conductor spawn claude      # start Claude Code
+conductor-daemon &              # start daemon (background)
+
+# Background spawn (returns immediately)
+conductor spawn claude          # → session: S1, pid: 12345
+conductor attach S1             # attach to the running session
+# Press Ctrl+C to detach (session keeps running)
+
+# Or spawn and attach in one step
+conductor spawn claude --attach
+
+# Or open in a new terminal window
+conductor spawn claude --new
+conductor attach S1 --new
 ```
 
 ## Commands
 
 ```bash
-conductor spawn <agent>          # Spawn AI agent (claude/codex/opencode/cmd)
-conductor spawn claude -c ./dir  # Spawn in specific directory
+conductor spawn <agent>          # Start session in background
+conductor spawn <agent> --attach # Start and attach immediately
+conductor spawn <agent> --new    # Open in new terminal window
+conductor attach <session-id>    # Attach to running session
+conductor attach <id> --new      # Open in new terminal window
 conductor list                   # List active sessions
 conductor kill <session-id>      # Kill a session
 conductor agents                 # List available agents
