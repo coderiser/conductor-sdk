@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 import { Command } from 'commander';
 import { DaemonClient } from './client.js';
 import { loadAgentConfig } from './agent-config.js';
