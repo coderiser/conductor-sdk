@@ -1,7 +1,18 @@
 import { spawn } from 'node-pty';
+import { execFileSync } from 'child_process';
 import type { IPty } from 'node-pty';
 import { resolveAgentArgs, type AgentConfig } from './agent-config.js';
 import { IS_WINDOWS } from './platform.js';
+
+/** Resolve a command name to its full path. On Windows tries .exe then .cmd. */
+function resolveCommand(cmd: string): string {
+  if (IS_WINDOWS && !cmd.endsWith('.exe') && !cmd.endsWith('.cmd') && !cmd.endsWith('.bat')) {
+    try { return execFileSync('where', [cmd + '.exe'], { stdio: 'pipe' }).toString().trim().split('\n')[0]; } catch {}
+    try { return execFileSync('where', [cmd + '.cmd'], { stdio: 'pipe' }).toString().trim().split('\n')[0]; } catch {}
+    return cmd + '.cmd';
+  }
+  return cmd;
+}
 
 export interface PtySession {
   sessionId: string;
@@ -23,24 +34,9 @@ export class PtyManager {
 
   spawn(sessionId: string, config: AgentConfig, cwd: string, cols: number, rows: number, isResume: boolean): PtySession {
     const agentArgs = resolveAgentArgs(config, sessionId, isResume);
-    let cmd: string;
-    let args: string[];
+    const cmd = resolveCommand(config.command);
 
-    if (IS_WINDOWS) {
-      // .exe files can be spawned directly; .cmd/.bat and bare commands need cmd.exe wrapper
-      if (config.command.endsWith('.exe')) {
-        cmd = config.command;
-        args = agentArgs;
-      } else {
-        cmd = 'cmd.exe';
-        args = ['/c', [config.command, ...agentArgs].join(' ')];
-      }
-    } else {
-      cmd = config.command;
-      args = agentArgs;
-    }
-
-    const pty = spawn(cmd, args, {
+    const pty = spawn(cmd, agentArgs, {
       name: 'xterm-256color',
       cols, rows,
       cwd: cwd || process.cwd(),
