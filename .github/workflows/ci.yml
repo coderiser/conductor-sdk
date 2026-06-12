@@ -37,3 +37,6 @@ jobs:
       - run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+# Local publish command:
+#   NODE_AUTH_TOKEN=npm_xxxxxxxxxxxx npm publish --access public
