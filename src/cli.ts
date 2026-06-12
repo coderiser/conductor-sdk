@@ -8,7 +8,7 @@ const program = new Command();
 program
   .name('conductor')
   .description('Cross-platform CLI for AI agent terminal sessions')
-  .version('1.0.0');
+  .version('1.0.1');
 
 // ── spawn: start a session (returns immediately) ──
 
