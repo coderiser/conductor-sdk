@@ -1,5 +1,5 @@
 {
-  "name": "conductor-sdk",
+  "name": "@coderiser/conductor-sdk",
   "version": "1.0.1",
   "description": "Cross-platform SDK for spawning and managing AI agent terminal sessions (Claude Code, Codex, OpenCode)",
   "type": "module",
