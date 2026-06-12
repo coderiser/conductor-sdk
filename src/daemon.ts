@@ -38,6 +38,12 @@ function handle(sock: net.Socket, msg: ClientMessage): void {
     case 'resize': ptyManager.resize(msg.sessionId, msg.cols, msg.rows); break;
     case 'kill': ptyManager.kill(msg.sessionId); break;
     case 'list': sock.write(encodeFrame({ type: 'list-response', sessions: ptyManager.list() })); break;
+    case 'shutdown':
+      console.log('[daemon] Shutting down...');
+      ptyManager.killAll();
+      if (!IS_WINDOWS) try { fs.unlinkSync(socketPath); } catch { /* ok */ }
+      process.exit(0);
+      break;
   }
 }
 

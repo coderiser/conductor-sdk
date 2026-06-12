@@ -188,4 +188,35 @@ program.command('info')
     } catch { console.log('Daemon: not running\nStart with: conductor-daemon'); }
   });
 
+// ── restart: restart the daemon ──
+
+program.command('restart')
+  .description('Restart the conductor daemon')
+  .action(async () => {
+    const { spawn } = await import('child_process');
+    try {
+      const client = new DaemonClient();
+      await client.connect();
+      console.log('Shutting down daemon...');
+      client.send({ type: 'shutdown' });
+      client.disconnect();
+      // Wait for daemon to exit
+      await new Promise(r => setTimeout(r, 1000));
+      // Small delay to ensure old pipe is released
+      await new Promise(r => setTimeout(r, 500));
+    } catch {
+      // Daemon may already be down
+    }
+
+    // Start new daemon
+    console.log('Starting new daemon...');
+    const child = spawn('conductor-daemon', [], {
+      detached: true,
+      stdio: 'ignore',
+      shell: true,
+    });
+    child.unref();
+    console.log(`Daemon restarted (PID: ${child.pid})`);
+  });
+
 program.parse();

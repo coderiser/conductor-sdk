@@ -6,7 +6,8 @@ export type ClientMessage =
   | { type: 'write'; sessionId: string; data: string }
   | { type: 'resize'; sessionId: string; cols: number; rows: number }
   | { type: 'kill'; sessionId: string }
-  | { type: 'list' };
+  | { type: 'list' }
+  | { type: 'shutdown' };
 
 export type DaemonMessage =
   | { type: 'hello-ack'; version: number }
