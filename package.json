@@ -1,20 +1,46 @@
 {
-  "name": "conductor-cli",
+  "name": "conductor-sdk",
   "version": "1.0.0",
-  "description": "Cross-platform CLI for spawning and managing AI agent terminal sessions",
+  "description": "Cross-platform SDK for spawning and managing AI agent terminal sessions (Claude Code, Codex, OpenCode)",
   "type": "module",
   "bin": {
     "conductor": "./dist/cli.js",
     "conductor-daemon": "./dist/daemon.js"
   },
+  "main": "./dist/cli.js",
+  "files": [
+    "dist/",
+    "src/",
+    "README.md"
+  ],
   "scripts": {
     "build": "vite build",
     "dev": "vite build --watch",
     "start": "node dist/cli.js",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "postpublish": "echo 'Published! Install with: npm install -g conductor-sdk'"
   },
-  "keywords": ["cli", "terminal", "pty", "ai-agent", "claude-code", "codex", "opencode"],
+  "keywords": [
+    "cli",
+    "terminal",
+    "pty",
+    "ai-agent",
+    "claude-code",
+    "codex",
+    "opencode",
+    "conductor",
+    "agent-orchestration",
+    "terminal-multiplexer"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/coderiser/conductor-sdk"
+  },
+  "author": "coderiser",
   "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "dependencies": {
     "commander": "^13.1.0",
     "node-pty": "^1.0.0"
