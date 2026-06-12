@@ -14,7 +14,7 @@ export default defineConfig({
       output: {
         entryFileNames: '[name].js',
         format: 'esm',
-        banner: (chunk) => chunk.name === 'cli' ? '#!/usr/bin/env node' : '',
+        banner: () => '#!/usr/bin/env node',
       },
       external: [
         ...builtinModules,
